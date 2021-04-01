@@ -10,7 +10,7 @@ services:
   server:
     image: ghcr.io/bots-house/go-away:staging
     command: python -m go_away
-    networks: [staging_dbs_default, trefik_default]
+    networks: [staging_dbs_default, traefik_default]
 
     environment:
       STAGE: production
