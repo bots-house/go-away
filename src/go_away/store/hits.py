@@ -73,7 +73,7 @@ class HitsTable(BaseDataTable[uuid.UUID, HitData]):
         except (ValueError, KeyError):
             user_id = uuid.uuid4()
 
-        bad_keys = {*_data.keys(), "url", "to", "from"}
+        bad_keys = {*_data.keys(), "url", "to", "from", "user_id"}
         other_params = {
             key: raw_data[key]
             for key in raw_data
