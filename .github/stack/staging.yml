@@ -21,8 +21,8 @@ services:
 
     healthcheck:
       test: /usr/bin/test $$(
-        python -c 'print(__import__("urllib.request").request.urlopen("http://127.0.0.1:4321/health").status)'
-      ) -eq 200
+          python -c 'print(__import__("urllib.request").request.urlopen("http://127.0.0.1:4321/health").status)'
+        ) -eq 200
       interval: 20s
       timeout: 5s
       retries: 5
