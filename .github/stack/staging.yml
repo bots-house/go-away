@@ -1,0 +1,72 @@
+version: "3.8"
+
+networks:
+  staging_dbs_default:
+    external: true
+
+services:
+  server:
+    image: ghcr.io/bots-house/go-away:staging
+    command: python -m go_away
+    networks: [staging_dbs_default]
+
+    environment:
+      STAGE: production
+      DOMAIN: ${DOMAIN}
+
+      DB_DSN: postgresql://finder:finder@staging_dbs_postgres:5432/finder
+      HOST: 0.0.0.0
+      PORT: 4321
+      REDIRECT_TO_DEFAULT: https://finder.vc/
+
+    healthcheck:
+      test: /usr/bin/test $$(
+        python -c 'print(__import__("urllib.request").request.urlopen("http://127.0.0.1:4321/health").status)'
+      ) -eq 200
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+    deploy:
+      mode: replicated
+      replicas: 1
+
+      resources:
+        limits:
+          memory: 200M
+
+      rollback_config:
+        parallelism: 2
+        order: stop-first
+
+      update_config:
+        parallelism: 0
+        order: stop-first
+        delay: 5s
+
+      restart_policy:
+        max_attempts: 6
+        window: 60s
+        delay: 3s
+        condition: any
+
+      placement:
+        constraints:
+          - node.role == worker
+          - node.labels.env == staging
+
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik_default
+
+        - traefik.http.routers.go-away-stage-http.rule=Host(`${DOMAIN?Variable not set}`)
+        - traefik.http.routers.go-away-stage-http.entrypoints=http
+        - traefik.http.routers.go-away-stage-http.middlewares=https-redirect
+        - traefik.http.routers.go-away-stage-https.rule=Host(`${DOMAIN?Variable not set}`)
+        - traefik.http.routers.go-away-stage-https.entrypoints=https
+        - traefik.http.routers.go-away-stage-https.tls=true
+        - traefik.http.routers.go-away-stage-https.tls.certresolver=le
+        - traefik.http.services.go-away-stage.loadbalancer.server.port=4321
+
+        - traefik.http.routers.go-away-stage-https.middlewares=robots_header
+        - traefik.http.middlewares.robots_header.headers.customResponseHeaders.X-Robots-Tag=noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
