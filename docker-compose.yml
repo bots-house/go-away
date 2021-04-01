@@ -1,0 +1,35 @@
+version: '3.8'
+
+volumes:
+  storage-data:
+    driver: local
+
+
+services:
+  storage:
+    image: postgres:13
+    restart: always
+    networks: [default]
+    expose: [5432]
+
+    environment:
+      POSTGRES_DB: go_away
+      POSTGRES_USER: go_away
+      POSTGRES_PASSWORD: go_away
+
+  server:
+    build:
+      context: .
+    depends_on: [storage]
+    networks: [default]
+    environment:
+      STAGE: production
+
+      DB_DSN: postgresql://go_away:go_away@storage:5432/go_away
+      HOST: 0.0.0.0
+      PORT: 4321
+
+      REDIRECT_TO_DEFAULT: https://finder.vc/
+
+    ports:
+      - 4321:4321
