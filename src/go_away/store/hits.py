@@ -1,7 +1,7 @@
 
 from typing import Optional, Tuple
-
 import uuid
+import json
 import ipaddress
 import datetime
 from dataclasses import dataclass
@@ -59,7 +59,7 @@ class HitsTable(BaseDataTable[uuid.UUID, HitData]):
     def split_pk_and_data(self, raw_data: dict) -> Tuple[uuid.UUID, HitData]:
         try:
             _data = {
-                "redirect_to": raw_data["to"],
+                "redirect_to": raw_data.get("url", raw_data["to"]),
                 "redirect_from": raw_data["from"],
                 "ip": raw_data["ip"],
                 "user_agent": raw_data["user_agent"],
@@ -73,13 +73,14 @@ class HitsTable(BaseDataTable[uuid.UUID, HitData]):
         except (ValueError, KeyError):
             user_id = uuid.uuid4()
 
+        bad_keys = {*_data.keys(), "url", "to", "from"}
         other_params = {
             key: raw_data[key]
             for key in raw_data
-            if key not in _data
+            if key not in bad_keys
         }
 
-        _data["other_params"] = other_params
+        _data["other_params"] = json.dumps(other_params)
         _data["user_id"] = user_id
 
         return user_id, HitData(**_data)

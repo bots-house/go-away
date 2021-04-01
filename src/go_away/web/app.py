@@ -9,8 +9,6 @@ from go_away.store.base import BaseDataTable
 from go_away.core.config import Config
 from go_away.web.views import (health, redirector)
 
-YEAR_IN_SECS = 31556952
-
 
 def get_service_fn(hits_table: BaseDataTable, config: Config) -> Callable[[], Awaitable[None]]:
     app = web.Application()

@@ -12,6 +12,3 @@ create table if not exists hits
 
 create unique index if not exists hits_id_uindex
     on hits (id);
-
-create unique index if not exists hits_user_id_uindex
-    on hits (user_id);
