@@ -1,6 +1,8 @@
 version: "3.8"
 
 networks:
+  traefik_default:
+    external: true
   staging_dbs_default:
     external: true
 
@@ -8,7 +10,7 @@ services:
   server:
     image: ghcr.io/bots-house/go-away:staging
     command: python -m go_away
-    networks: [staging_dbs_default]
+    networks: [staging_dbs_default, trefik_default]
 
     environment:
       STAGE: production
