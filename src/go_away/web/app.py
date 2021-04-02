@@ -5,12 +5,12 @@ from typing import Callable, Awaitable
 
 from aiohttp import web
 
-from go_away.store.base import BaseDataTable
+from go_away.store.hits import HitsTable
 from go_away.core.config import Config
 from go_away.web.views import (health, redirector)
 
 
-def get_service_fn(hits_table: BaseDataTable, config: Config) -> Callable[[], Awaitable[None]]:
+def get_service_fn(hits_table: HitsTable, config: Config) -> Callable[[], Awaitable[None]]:
     app = web.Application()
 
     app.router.add_get(

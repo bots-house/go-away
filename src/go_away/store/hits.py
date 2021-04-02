@@ -31,6 +31,11 @@ class HitData:
 
     other_params: Optional[str]
 
+    @property
+    def other_params_to_python(self) -> 'Optional[dict[str, str]]':
+        # we narrow down type for other_params to a legit (Object<str, str> | null)
+        return json.loads(self.other_params)
+
 
 class HitsTable(BaseDataTable[uuid.UUID, HitData]):
     table_name = "hits"
