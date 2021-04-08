@@ -1,4 +1,6 @@
-create table if not exists hits
+create schema if not exists go_away;
+
+create table if not exists go_away.hits
 (
     id            serial                   not null,
     at            timestamp with time zone not null,
@@ -11,4 +13,4 @@ create table if not exists hits
 );
 
 create unique index if not exists hits_id_uindex
-    on hits (id);
+    on go_away.hits (id);

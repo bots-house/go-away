@@ -38,7 +38,7 @@ class HitData:
 
 
 class HitsTable(BaseDataTable[uuid.UUID, HitData]):
-    table_name = "hits"
+    table_name = "go_away.hits"
 
     async def create_entry(self, data: HitData) -> None:
         async with self.pool.acquire() as conn:  # type: Connection
@@ -64,7 +64,7 @@ class HitsTable(BaseDataTable[uuid.UUID, HitData]):
     def split_pk_and_data(self, raw_data: dict) -> Tuple[uuid.UUID, HitData]:
         try:
             _data = {
-                "redirect_to": raw_data.get("url", raw_data["to"]),
+                "redirect_to": raw_data.get("url", None) or raw_data["to"],
                 "redirect_from": raw_data["from"],
                 "ip": raw_data["ip"],
                 "user_agent": raw_data["user_agent"],
