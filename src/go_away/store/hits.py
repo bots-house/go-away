@@ -38,7 +38,7 @@ class HitData:
 
 
 class HitsTable(BaseDataTable[uuid.UUID, HitData]):
-    table_name = "go_away.hits"
+    table_name = '"go_away"."hits"'
 
     async def create_entry(self, data: HitData) -> None:
         async with self.pool.acquire() as conn:  # type: Connection
@@ -56,7 +56,7 @@ class HitsTable(BaseDataTable[uuid.UUID, HitData]):
     @cached_property
     def create_statement(self) -> str:
         return f"""
-        insert into "{self.table_name}" (
+        insert into {self.table_name} (
             at, redirect_to, redirect_from, user_id, ip, user_agent, other_params
         ) values ($1, $2, $3, $4, $5, $6, $7);
         """
