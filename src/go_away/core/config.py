@@ -34,6 +34,6 @@ class Config:
         default_factory=_lazy_getenv("PORT", int),
     )
 
-    sentry_dsn = field(
+    sentry_dsn: str = field(
         default_factory=_lazy_getenv("SENTRY_DSN", str),
     )
