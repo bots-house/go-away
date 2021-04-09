@@ -33,3 +33,7 @@ class Config:
     port: int = field(
         default_factory=_lazy_getenv("PORT", int),
     )
+
+    sentry_dsn = field(
+        default_factory=_lazy_getenv("SENTRY_DSN", str),
+    )

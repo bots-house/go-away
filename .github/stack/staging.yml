@@ -15,6 +15,7 @@ services:
     environment:
       STAGE: production
       DOMAIN: ${DOMAIN}
+      SENTRY_DSN: ${SENTRY_DSN}
 
       DB_DSN: postgresql://finder:finder@staging_dbs_postgres:5432/finder
       HOST: 0.0.0.0

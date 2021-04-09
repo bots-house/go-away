@@ -28,6 +28,7 @@ services:
       DB_DSN: postgresql://go_away:go_away@storage:5432/go_away
       HOST: 0.0.0.0
       PORT: 4321
+      SENTRY_DSN: ''
 
       REDIRECT_TO_DEFAULT: https://finder.vc/
 

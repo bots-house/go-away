@@ -7,8 +7,8 @@ create table if not exists go_away.hits
     redirect_to   varchar(600)             not null,
     redirect_from varchar(600),
     user_id       uuid                     not null,
-    ip            varchar(15)              not null,
-    user_agent    varchar(180)             not null,
+    ip            text                     not null,
+    user_agent    text                     not null,
     other_params  jsonb
 );
 
