@@ -67,7 +67,7 @@ services:
         - traefik.http.routers.go-away-stage-https.rule=Host(`${DOMAIN?Variable not set}`)
         - traefik.http.routers.go-away-stage-https.entrypoints=https
         - traefik.http.routers.go-away-stage-https.tls=true
-        - traefik.http.routers.go-away-stage-https.tls.certresolver=le
+        - traefik.http.routers.go-away-stage-https.tls.certresolver=le-do
         - traefik.http.services.go-away-stage.loadbalancer.server.port=4321
 
         - traefik.http.routers.go-away-stage-https.middlewares=robots_header
