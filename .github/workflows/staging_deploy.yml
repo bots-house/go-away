@@ -60,6 +60,7 @@ jobs:
             stack-name: go-away-stage
             stack-vars: |
               DOMAIN: go.srv.finder.vc
+              SENTRY_DSN: "${{ secrets.SENTRY_DSN }}"
 
             stack-file: .github/stack/staging.yml
 
