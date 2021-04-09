@@ -11,6 +11,11 @@ async def make_tables(
     config: Config,
     table_clss: Tuple[Type[BaseDataTable], ...],
 ) -> Tuple[BaseDataTable, ...]:
-    shared_pool = await create_pool(config.db_dsn, min_size=3, max_size=3)
+    shared_pool = await create_pool(
+        config.db_dsn,
+        min_size=3,
+        max_size=3,
+        statement_cache_size=0,
+    )
 
     return tuple(table_cls(shared_pool) for table_cls in table_clss)
