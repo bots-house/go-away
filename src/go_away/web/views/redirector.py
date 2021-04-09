@@ -34,7 +34,7 @@ def get_redirect_view(table: HitsTable, default_redirect_location: str):
             response.headers["Location"] = str(
                 yarl
                 .URL(data.redirect_to)
-                .update_query(data.other_params_to_python)
+                .update_query(data.other_params_to_python())
             )
 
         except (ValueError, KeyError):

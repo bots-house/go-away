@@ -23,7 +23,7 @@ class HitData:
     at: datetime.datetime
 
     redirect_to: str
-    redirect_from: str
+    redirect_from: Optional[str]
 
     user_id: uuid.UUID
     ip: ipaddress.IPv4Address
@@ -31,7 +31,6 @@ class HitData:
 
     other_params: Optional[str]
 
-    @property
     def other_params_to_python(self) -> 'Optional[dict[str, str]]':
         # we narrow down type for other_params to a legit (Object<str, str> | null)
         return json.loads(self.other_params)
@@ -65,7 +64,7 @@ class HitsTable(BaseDataTable[uuid.UUID, HitData]):
         try:
             _data = {
                 "redirect_to": raw_data.get("url", None) or raw_data["to"],
-                "redirect_from": raw_data["from"],
+                "redirect_from": raw_data.get("from", None),
                 "ip": raw_data["ip"],
                 "user_agent": raw_data["user_agent"],
                 "at": datetime.datetime.utcnow(),
